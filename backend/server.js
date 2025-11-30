@@ -6,6 +6,7 @@ import morgan from 'morgan'
 import rateLimit from 'express-rate-limit'
 import { router as authRoutes } from './src/routes/auth.js'
 import { router as dataRoutes } from './src/routes/data.js'
+import { router as cepRoutes } from './src/routes/cep.js'
 
 const app = express()
 
@@ -24,6 +25,7 @@ app.use('/login', rateLimit({
 
 app.use('/auth', authRoutes)
 app.use('/api', dataRoutes)
+app.use('/api/cep', cepRoutes)
 
 app.listen(3001, () => {
     console.log("Backend rodando na porta 3001")

@@ -31,7 +31,7 @@ function BuscarCEP() {
     dispatch({ type: "SET_ERRO", payload: null }); // limpa erro anterior
 
     try {
-      const resposta = await fetch(`https://brasilapi.com.br/api/cep/v1/${data.cep}`);
+      const resposta = await fetch(`http://localhost:3001/api/cep/${data.cep}`);
 
       if (!resposta.ok) {
         throw new Error("CEP não encontrado");
