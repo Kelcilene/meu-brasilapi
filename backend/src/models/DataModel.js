@@ -5,7 +5,7 @@ export class DataModel {
         const db = await connect()
         return db.all(
             "SELECT * FROM dados WHERE nome LIKE ?",
-            `%${term}%`
+           [`%${term}%`]
         )
     }
 

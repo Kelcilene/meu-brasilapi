@@ -1,15 +1,29 @@
-import { CepProvider } from "./contexts/CepContext";
-import BuscarCEP from "./components/BuscarCEP";
+import { useState } from 'react'
+import LoginPage from './pages/LoginPage'
+import Dashboard from './pages/Dashboard' 
 
 function App() {
-  return (
-    <CepProvider>
-      <div style={{ padding: "20px" }}>
-        <h1>Consulta de CEP BrasilAPI</h1>
-        <BuscarCEP />
-      </div>
-    </CepProvider>
-  );
+  // Simplesmente verifica se há um token JWT no localStorage
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem('token')
+  )
+
+  const handleLogin = (token) => {
+    localStorage.setItem('token', token)
+    setIsAuthenticated(true)
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    setIsAuthenticated(false)
+  }
+
+  // Se estiver autenticado, mostra o conteúdo principal, senão, a tela de Login
+  if (isAuthenticated) {
+    return <Dashboard onLogout={handleLogout} /> 
+  }
+
+  return <LoginPage onLogin={handleLogin} />
 }
 
-export default App;
+export default App
