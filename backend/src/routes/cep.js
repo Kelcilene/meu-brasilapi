@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { cacheMiddleware } from '../utils/cache.js';
+import { cacheMiddleware } from '../config/cache.js';
 
 export const router = Router();
 

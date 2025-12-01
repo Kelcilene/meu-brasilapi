@@ -1,7 +1,7 @@
 import express from 'express'
 import jwt from 'jsonwebtoken'
 import { DataModel } from '../models/DataModel.js'
-import { cacheMiddleware } from '../utils/cache.js';
+import { cacheMiddleware } from '../config/cache.js';
 // import sanitizeHtml from 'sanitize-html' // Importa o sanitizador
 
 export const router = express.Router()
