@@ -15,7 +15,7 @@ export class DataModel {
 
         return db.run(
             "INSERT INTO dados (nome, categoria, cidade) VALUES (?, ?, ?)",
-            nome, categoria, cidade
+            nome, categoria, cidade // <--- ISTO É O QUE PREVINE SQL INJECTION
         )
     }
 }

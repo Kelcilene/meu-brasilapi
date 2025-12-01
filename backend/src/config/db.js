@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 // Variável para armazenar a instância da conexão
 let db = null;
 
-export async function connect() {
+export async function connect() {     //POOL DE CONEXAO
     if (db) {
         return db; // Retorna a instância existente se já estiver aberta
     }
