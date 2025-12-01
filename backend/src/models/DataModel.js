@@ -11,7 +11,8 @@ export class DataModel {
 
     static async insert(obj) {
         const db = await connect()
-        const { nome, categoria, cidade } = obj
+        let { nome, categoria, cidade } = obj
+
         return db.run(
             "INSERT INTO dados (nome, categoria, cidade) VALUES (?, ?, ?)",
             nome, categoria, cidade

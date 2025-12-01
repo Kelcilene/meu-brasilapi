@@ -14,7 +14,8 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
-app.use(helmet())
+app.use(helmet());
+app.use(helmet.xssFilter());
 app.use(compression())
 app.use(morgan("combined"))
 

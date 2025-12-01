@@ -1,9 +1,10 @@
 import { Router } from "express";
+import { cacheMiddleware } from '../utils/cache.js';
 
 export const router = Router();
 
 // Rota para consultar CEP usando BrasilAPI
-router.get("/:cep", async (req, res) => {
+router.get("/:cep", cacheMiddleware(3600), async (req, res) => {
   const cep = req.params.cep;
 
   try {

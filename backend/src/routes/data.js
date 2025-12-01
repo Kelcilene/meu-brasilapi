@@ -1,5 +1,8 @@
 import express from 'express'
+import jwt from 'jsonwebtoken'
 import { DataModel } from '../models/DataModel.js'
+import { cacheMiddleware } from '../utils/cache.js';
+// import sanitizeHtml from 'sanitize-html' // Importa o sanitizador
 
 export const router = express.Router()
 
@@ -17,7 +20,7 @@ function auth(req, res, next) {
 }
 
 // BUSCA
-router.get("/buscar", auth, async (req, res) => {
+router.get("/buscar", auth, cacheMiddleware(300), async (req, res) => { // <-- APLICAÇÃO DO CACHE
     const q = req.query.q || ""
     const results = await DataModel.search(q)
     res.json(results)
@@ -25,9 +28,23 @@ router.get("/buscar", auth, async (req, res) => {
 
 // INSERÇÃO
 router.post("/inserir", auth, async (req, res) => {
-    const { nome, categoria, cidade } = req.body
+    let { nome, categoria, cidade } = req.body
+
     if (!nome) return res.status(400).json({ error: "Nome é obrigatório" })
 
+    //Sanitização para prevenir XSS antes de enviar para o Model
+    // const sanitizeOptions = {
+    //    allowedTags: [], // Nenhuma tag HTML é permitida
+    //    allowedAttributes: {}, // Nenhum atributo é permitido
+    //    transformTags: {
+    //        'script': (tagName, attribs) => ({tagName: '', textContent: ''})
+    //    }
+    //};
+
+    //nome = sanitizeHtml(nome, { allowedTags: [], allowedAttributes: {} });
+    //categoria = sanitizeHtml(categoria, { allowedTags: [], allowedAttributes: {} });
+    //cidade = sanitizeHtml(cidade, { allowedTags: [], allowedAttributes: {} });
+    
     await DataModel.insert({ nome, categoria, cidade })
     res.json({ message: "Inserido com sucesso" })
 })
