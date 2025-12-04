@@ -12,13 +12,13 @@ services:
       - frontend
 
   frontend:
-    build: ./frontend
-    container_name: meu-brasilapi-frontend
-    ports:
-      - "5173:5173"
-    volumes:
-      - ./frontend:/app
-    command: ["npm", "run", "dev", "--", "--host"]
+  build: ./frontend
+  container_name: frontend
+  ports:
+    - "5173:5173"
+  volumes:
+    - ./frontend:/app
+  command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
 
 volumes:
   sqlite_data:
