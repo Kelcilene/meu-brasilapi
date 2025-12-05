@@ -1,13 +1,12 @@
-FROM node:18
+FROM node:20
 
 WORKDIR /app
 
-# Dependências nativas para sqlite3 e bcrypt
-RUN apt-get update && apt-get install -y python3 g++ make
-
+# Copia apenas package.json para instalar dependências
 COPY package*.json ./
 RUN npm install
 
+# Copia todo o código
 COPY . .
 
 EXPOSE 3000
