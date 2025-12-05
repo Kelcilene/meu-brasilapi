@@ -6,19 +6,23 @@ services:
       - "3000:3000"
     volumes:
       - ./backend:/app
-      - sqlite_data:/app
-    command: ["node", "server.js"]
-    depends_on:
-      - frontend
+      - sqlite_data:/app/data
+      - /app/node_modules
+    environment:
+      - PORT=3000
+    command: ["npm", "start"]
 
   frontend:
-  build: ./frontend
-  container_name: frontend
-  ports:
-    - "5173:5173"
-  volumes:
-    - ./frontend:/app
-  command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+    build: ./frontend
+    container_name: meu-brasilapi-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+    depends_on:
+      - backend
 
 volumes:
   sqlite_data:
