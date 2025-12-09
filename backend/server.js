@@ -32,5 +32,5 @@ app.use('/api', dataRoutes);
 app.use('/api/cep', cepRoutes);
 
 app.listen(PORT, () => {
-    console.log(`Backend rodando na porta ${PORT}`);
+    logger.info(`Backend rodando na porta ${PORT}`);
 });
