@@ -20,7 +20,7 @@ export default function BuscarDados() {
     setResultados([]);
 
     try {
-      const response = await api.get(`/api/dados?search=${query}`);
+      const response = await api.get(`/api/buscar?q=${query}`);
       setResultados(response.data);
     } catch (err) {
       const msg = err.response?.data?.error || "Erro ao buscar dados.";
@@ -72,4 +72,5 @@ export default function BuscarDados() {
     </div>
   );
 }
+
 
