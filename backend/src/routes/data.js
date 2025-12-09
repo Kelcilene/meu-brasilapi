@@ -19,15 +19,20 @@ function auth(req, res, next) {
     }
 }
 
-// BUSCA
+//Função de Sanitização simples
+function sanitize(input){
+    if (!input).replace(/[<>/"'`;(){}]/g, "");
+}
+
+// BUSCA com cache + Sanitização
 router.get("/buscar", auth, cacheMiddleware(300), async (req, res) => { // <-- APLICAÇÃO DO CACHE
     let q = (req.query.q || req.query.term || req.query.search || "").trim()
 if (!q) {
         return res.status(400).json({ error: "Parâmetro de busca é obrigatório" })
     }    
 
-// Sanitização simples contra XSS/sql injection
-    q = q.replace(/[^\w\sáéíóúãõâêîôûç]/gi, "")
+// Sanitização da busca
+  q = sanitize(q)
 
     try{
     const results = await DataModel.search(q)
@@ -42,21 +47,20 @@ if (!q) {
 router.post("/inserir", auth, async (req, res) => {
     let { nome, categoria, cidade } = req.body
 
-    if (!nome) return res.status(400).json({ error: "Nome é obrigatório" })
-
-    //Sanitização para prevenir XSS antes de enviar para o Model
-    // const sanitizeOptions = {
-    //    allowedTags: [], // Nenhuma tag HTML é permitida
-    //    allowedAttributes: {}, // Nenhum atributo é permitido
-    //    transformTags: {
-    //        'script': (tagName, attribs) => ({tagName: '', textContent: ''})
-    //    }
-    //};
-
-    //nome = sanitizeHtml(nome, { allowedTags: [], allowedAttributes: {} });
-    //categoria = sanitizeHtml(categoria, { allowedTags: [], allowedAttributes: {} });
-    //cidade = sanitizeHtml(cidade, { allowedTags: [], allowedAttributes: {} });
+    if (!nome){
+        return res.status(400).json({ error: "Nome é obrigatório" })
+    }
     
-    await DataModel.insert({ nome, categoria, cidade })
-    res.json({ message: "Inserido com sucesso" })
+    // sanitização dos campos
+    nome = sanitize(nome)
+    categoria = sanitize(categoria)
+    cidade = sanitize(cidade)
+    
+ try {
+        await DataModel.insert({ nome, categoria, cidade })
+        res.json({ message: "Inserido com sucesso" })
+    } catch (err) {
+        console.error("Erro ao inserir:", err)
+        res.status(500).json({ error: "Erro ao inserir no banco de dados" })
+    }
 })
