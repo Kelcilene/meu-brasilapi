@@ -2,6 +2,7 @@ import express from 'express'
 import jwt from 'jsonwebtoken'
 import { DataModel } from '../models/DataModel.js'
 import { cacheMiddleware } from '../config/cache.js';
+import logger from "../config/logger.js";
 // import sanitizeHtml from 'sanitize-html' // Importa o sanitizador
 
 export const router = express.Router()
@@ -27,10 +28,21 @@ function sanitize(input){
 // BUSCA com cache + Sanitização
 router.get("/buscar", auth, cacheMiddleware(300), async (req, res) => { // <-- APLICAÇÃO DO CACHE
     let q = (req.query.q || req.query.term || req.query.search || "").trim()
-if (!q) {
+    
+    if (!q) {
+        logger.warn("Busca sem parâmetro realizada");
         return res.status(400).json({ error: "Parâmetro de busca é obrigatório" })
     }    
-
+    try {
+            const results = await DataModel.search(q);
+            logger.info(`Busca realizada: termo = ${q}, resultados = ${results.length}`);
+            res.json(results);
+        } catch (err) {
+            logger.error("Erro na rota /buscar", { message: err.message, stack: err.stack });
+            res.status(500).json({ error: "Erro ao realizar a busca" });
+        }
+    });
+    
 // Sanitização da busca
   q = sanitize(q)
 
