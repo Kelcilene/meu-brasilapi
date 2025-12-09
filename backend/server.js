@@ -8,6 +8,7 @@ import rateLimit from 'express-rate-limit';
 import { router as authRoutes } from './src/routes/auth.js';
 import { router as dataRoutes } from './src/routes/data.js';
 import { router as cepRoutes } from './src/routes/cep.js';
+import logger from "./src/config/logger.js";
 
 const app = express();
 
