@@ -20,7 +20,7 @@ export default function BuscarDados() {
     setResultados([]);
 
     try {
-      const response = await api.get(`/api/buscar?q=${query}`);
+      const response = await api.get(`/api/dados?search=${query}`);
       setResultados(response.data);
     } catch (err) {
       const msg = err.response?.data?.error || "Erro ao buscar dados.";
@@ -56,7 +56,6 @@ export default function BuscarDados() {
         <p style={{ color: "red", fontWeight: "bold" }}>{erro}</p>
       )}
 
-      {/* Resultados */}
       {resultados.length > 0 && (
         <ul style={{ marginTop: "15px" }}>
           {resultados.map((item) => (
@@ -73,3 +72,4 @@ export default function BuscarDados() {
     </div>
   );
 }
+
