@@ -20,7 +20,7 @@ app.use(compression());
 app.use(morgan('combined'));
 
 // impedir força bruta no login
-app.use('/login', rateLimit({
+app.use('/auth/login', rateLimit({
     windowMs: 60 * 1000,
     max: 5,
     message: 'Muitas tentativas. Tente novamente mais tarde.'

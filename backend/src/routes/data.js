@@ -21,9 +21,21 @@ function auth(req, res, next) {
 
 // BUSCA
 router.get("/buscar", auth, cacheMiddleware(300), async (req, res) => { // <-- APLICAÇÃO DO CACHE
-    const q = req.query.q || ""
+    let q = (req.query.q || req.query.term || req.query.search || "").trim()
+if (!q) {
+        return res.status(400).json({ error: "Parâmetro de busca é obrigatório" })
+    }    
+
+// Sanitização simples contra XSS/sql injection
+    q = q.replace(/[^\w\sáéíóúãõâêîôûç]/gi, "")
+
+    try{
     const results = await DataModel.search(q)
     res.json(results)
+    }catch (err){
+        console.error("Erro na busca:", err)
+        res.status(500).json({error: "Erro ao realizar a busca"})
+    }
 })
 
 // INSERÇÃO

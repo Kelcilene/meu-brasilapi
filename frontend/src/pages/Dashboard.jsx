@@ -8,7 +8,7 @@ function Dashboard({ onLogout }) {
   return (
     <div style={{ padding: "20px" }}>
       
-      {/* 1. Botão de Logout */}
+      {/* Botão de Logout */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Área Restrita (Dashboard)</h1>
         <button onClick={onLogout} style={{ padding: '10px 20px', backgroundColor: '#f44336', color: 'white', border: 'none', cursor: 'pointer' }}>
@@ -16,23 +16,18 @@ function Dashboard({ onLogout }) {
         </button>
       </div>
 
-      ---
+      <hr />
 
-      {/* 2. Funcionalidade de Busca (Requisito 2) */}
+      {/* Busca CEP */}
       <h2>🔍 Requisito Funcional 2: Busca</h2>
       
-      {/* Manter o CepProvider, mas você pode ter que movê-lo 
-        para o Dashboard, dependendo de onde o estado é necessário.
-        Se os dados do CEP não precisam ser compartilhados, você pode remover o Provider. 
-        Mantive para compatibilidade com o seu código anterior. 
-      */}
       <CepProvider>
-        <BuscarCEP />
+        <BuscarDados/>
       </CepProvider>
       
-      ---
+      <hr />
       
-      {/* 3. Funcionalidade de Inserção (Requisito 3) */}
+      {/* Inserção */}
       <h2>➕ Requisito Funcional 3: Inserção</h2>
       <InsertData /> {/* Este componente você precisará criar */}
       
