@@ -20,6 +20,16 @@ app.use(helmet());
 app.use(compression());
 app.use(morgan('combined'));
 
+// Log básico de todas as requisições
+app.use((req, res, next) => {
+    logger.info({
+        method: req.method,
+        url: req.url,
+        ip: req.ip
+    });
+    next();
+});
+
 // impedir força bruta no login
 app.use('/auth/login', rateLimit({
     windowMs: 60 * 1000,
